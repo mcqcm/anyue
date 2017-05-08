@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Spring配置文件的Schema信息 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+        
+     <!-- 定义数据源Bean，使用C3P0数据源实现 -->
+    <context:property-placeholder
+		 location="classpath*:jdbc.properties"/>
+    <!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<!-- 指定连接数据库的驱动 -->
+        <property name="driverClass" value="${driverClass}"/>
+		<!-- 指定连接数据库的URL -->
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+		<!-- 指定连接数据库的用户名 -->
+        <property name="user" value="${user}"/>
+		<!-- 指定连接数据库的密码 -->
+        <property name="password" value="${password}"/>
+		<!-- 指定连接数据库连接池的最大连接数 -->
+        <property name="maxPoolSize" value="400"/>
+		<!-- 指定连接数据库连接池的最小连接数 -->
+        <property name="minPoolSize" value="1"/>
+		<!-- 指定连接数据库连接池的初始化连接数 -->
+        <property name="initialPoolSize" value="3"/>
+		<!-- 指定连接数据库连接池的连接的最大空闲时间 -->
+        <property name="maxIdleTime" value="1800"/>
+        <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+	    <property name="acquireIncrement" value="3"></property>
+	    <!-- 控制数据源内加载的PreparedStatements数量。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0 -->
+	    <property name="maxStatements" value="8"></property>
+	    <!--maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0 -->
+	    <property name="maxStatementsPerConnection" value="5"></property>
+    </bean>
+<!--       <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource"> -->
+<!--     <property name="driverClass" value="${driverClass}" /> -->
+<!--     <property name="url" value="${jdbcUrl}" /> -->
+<!--     <property name="username" value="${user}" /> -->
+<!--     <property name="password" value="${password}" /> -->
+<!--   </bean> -->
+	<!-- 定义Hibernate的SessionFactory -->
+    <bean id="sessionFactory"  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<!-- 依赖注入数据源，注入正是上面定义的dataSource -->
+        <property name="dataSource" ref="dataSource"/>
+		<!-- mappingResouces属性用来列出全部映射文件 -->
+         <property name="packagesToScan">  
+			<list>  
+			<value>com.orm</value>
+			</list>
+        </property>
+		<!-- 定义Hibernate的SessionFactory的属性 -->
+        <property name="hibernateProperties">
+			<!-- 配置Hibernate属性 -->
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.jdbc.fetch_size">50</prop>
+                <prop key="hibernate.jdbc.batch_size">50</prop>
+            </props> 
+        </property>
+    </bean>
+
+    <bean id="hibernateTemplate"  class="org.springframework.orm.hibernate3.HibernateTemplate">  
+        <property name="sessionFactory">  
+            <ref bean="sessionFactory"/>  
+        </property>  
+        <property name="allowCreate">  
+            <value>true</value>  
+        </property>  
+    </bean> 
+    
+	<!-- 开启基于注解的事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	<!-- 设置hibernate3的事务管理 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource" />
+		<property name="deploymentResources" value="classpath*:/diagrams/*.bpmn" />
+		<property name="deploymentMode" value="single-resource" />
+		<property name="transactionManager" ref="transactionManager" />
+    	<property name="databaseSchemaUpdate" value="true" />
+    	<property name="jobExecutorActivate" value="false" />
+    	<property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
+	</bean>
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+  		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+        <!-- 业务层注入 即将注入action控制层 -->
+	<!-- 开启Spring的Annotation注解处理器 -->
+    <context:annotation-config />
+
+	<!-- 开启Spring的Bean自动扫描机制来查找与管理Bean实例 -->
+    <context:component-scan base-package="com" />
+</beans>

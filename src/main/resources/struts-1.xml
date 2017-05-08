@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Struts2配置文件的DTD信息 --> 
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- Struts2配置文件的根元素 -->
+<struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.multipart.maxSize" value="100000000"/>
+	<!-- 配置了系列常量 -->
+    <package name="action1" extends="struts-default">
+<!--         <default-interceptor-ref name="mydefault"></default-interceptor-ref> -->
+        <action name="organize" class="com.action.OrgmanageAction">
+            <result name="getorgsuccess">/orgmanage/orgmain.jsp</result>
+            <result name="modpage">/orgmanage/modorg.jsp</result>
+           <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">organize!getOrgList</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+            <result name="ListAll" type="redirectAction">
+                  <param name="actionName">organize!getOrgList</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+        </action>
+        <action name="initallshop" class="com.action.InitAllShopAction">
+            <result name="getorgsuccess">/initallshop/orgmain.jsp</result>
+            <result name="modpage">/initallshop/modshop.jsp</result>
+            <result name="belongList">/initallshop/belonglist.jsp</result>
+           <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">initallshop!belongList</param>  
+                  <param name="belongcode">${orgInfo.belongcode}</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+            <result name="ListAll" type="redirectAction">
+                  <param name="actionName">initallshop!getOrgList</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+            <interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/gif,image/jpeg,image/jpg,image/png
+				</param>
+				<param name="maximumSize">100000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result name="input">/orgstaff/uperror.jsp</result>
+        </action>
+         <action name="initmyshops" class="com.action.InitMyShopsAction">
+            <result name="getorgsuccess">/initallshop/orgmain.jsp</result>
+            <result name="modpage">/initallshop/modmyshops.jsp</result>
+            <result name="ListAll">/initallshop/myshoplist.jsp</result> 
+            <interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/gif,image/jpeg,image/jpg,image/png
+				</param>
+				<param name="maximumSize">10000000</param>
+			</interceptor-ref>
+			<result name="addSuccess" type="redirectAction">
+                  <param name="actionName">initmyshops.action</param>  
+                   <param name="namespace">/</param>            
+            </result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result name="input">/orgstaff/uperror.jsp</result>
+        </action>
+        <action name="orgstaff" class="com.action.OrgStaffAction">
+        	<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/gif,image/jpeg,image/jpg,image/png
+				</param>
+				<param name="maximumSize">100000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result name="input">/orgstaff/uperror.jsp</result>
+            <result name="modpage">/orgstaff/modstaff.jsp</result>
+            <result name="ListAll">/orgstaff/stafflist.jsp</result> 
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">orgstaff.action</param>  
+                   <param name="namespace">/</param>            
+            </result>
+        </action>
+         <action name="staffsearch" class="com.action.StaffSearchAction">
+            <result name="getorgsuccess">/staffsearch/orgmain.jsp</result>
+            <result name="seecard">/staffsearch/healthimage.jsp</result>
+            <result name="listmyshops">/staffsearch/mymain.jsp</result> 
+        </action>
+        <action name="download" class="com.action.DownLoadTemplateAction">
+            <result name="downloadpage">/licence/download/download.jsp</result>
+            <result name="success" type="stream">  
+               <param name="contentType">text/plain</param>  
+               <param name="contentDisposition">attachment;fileName="${fileName}"</param>  
+               <param name="inputName">downloadFile</param>  
+               <param name="bufferSize">1024</param>  
+           </result> 
+        </action>
+        <action name="applylicence" class="com.action.ApplyLicenceAction">
+            <interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					application/java-archive,application/x-rar-compressed,application/zip,application/octet-stream,application/x-zip-compressed
+				</param>
+				<param name="maximumSize">1000000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="input">/orgstaff/uperror.jsp</result>
+            <result name="applypage">/licence/apply.jsp</result>
+            <result name="applyerror">/licence/applyerror.jsp</result>
+            <result name="submitsuccess">/licence/submitsuccess.jsp</result> 
+            <result name="licencelist">/licence/licencesearch/licencelist.jsp</result> 
+            <result name="seelicence">/licence/licencesearch/seelicence.jsp</result> 
+            <result name="success" type="stream">  
+               <param name="contentType">text/plain</param>  
+               <param name="contentDisposition">attachment;fileName="${fileName}"</param>  
+               <param name="filename">${fileName}</param> 
+               <param name="id">${id}</param> 
+               <param name="inputName">downloadFile</param>  
+               <param name="bufferSize">1024</param>  
+           </result>
+        </action>
+        <action name="task" class="com.action.TaskAction">
+            <result name="getsuccess">/noticemanage/firstpage/tasklist.jsp</result> 
+            <result name="approve">/licence/approve.jsp</result> 
+            <result name="applypage">/licence/applypage.jsp</result> 
+            <result name="approveaction" type="redirectAction">
+                  <param name="actionName">${formkey}</param>  
+                  <param name="taskid">${taskid}</param> 
+                   <param name="namespace">/</param>  
+            </result> 
+            <result name="success" type="stream">  
+               <param name="contentType">text/plain</param>  
+               <param name="contentDisposition">attachment;fileName="${fileName}"</param>  
+               <param name="filename">${fileName}</param> 
+               <param name="inputName">downloadFile</param>  
+               <param name="bufferSize">1024</param>  
+           </result> 
+           <interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/gif,image/jpeg,image/jpg,image/png
+				</param>
+				<param name="maximumSize">100000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<result name="input">/orgstaff/uperror.jsp</result>
+        	<result name="taskdone" type="redirectAction">
+                  <param name="actionName">task!gettasklist.action</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+            <result name="sendemail" type="redirectAction">
+                  <param name="actionName">sendemail.action</param>  
+                  <param name="to">${to}</param>  
+                  <param name="subject">${subject}</param>  
+                  <param name="body">${body}</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+        </action>
+        <action name="sendemail" class="com.action.Emailer">
+        </action>
+        <action name="trainmanage" class="com.action.TrainManageAction">
+        		<result name="ListAll">/trainmanage/shoplists.jsp</result> 
+        		<result name="findSuccess">/trainmanage/modcontent.jsp</result> 
+        		<result name="Listcontent">/trainmanage/contentlist.jsp</result>
+        		<result name="addSuccess" type="redirectAction">
+                  	 <param name="actionName">trainmanage!Listcontent.action</param>  
+                     <param name="namespace">/</param>            
+                </result> 
+                <result name="chooseTrainpage">/trainmanage/choosepage.jsp</result> 
+                <result name="emailedorgs">/trainmanage/emailedorgs.jsp</result>
+        </action>
+    </package>
+    
+    	 
+        
+</struts>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Struts2配置文件的DTD信息 --> 
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- Struts2配置文件的根元素 -->
+<struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 配置了系列常量 -->
+    <package name="default" extends="struts-default">
+        
+<!--         <default-interceptor-ref name="mydefault"></default-interceptor-ref> -->
+        
+        <!--定义全局Result-->  
+        <global-results>  
+            <result name="loginSuccess">/main2.jsp</result>
+            <result name="input" type="redirectAction">
+                  <param name="actionName">login!index</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result> 
+            <result name="exit" type="redirectAction">
+                  <param name="actionName">login!index</param>  
+                   <param name="namespace">/</param>  
+             </result>
+            <result name="loginpage">/login2.jsp</result> 
+            <result name="error">/error.jsp</result>  
+        </global-results>  
+       
+       <action name="common" class="com.common.CommonAction">
+        <result name="listSuccess">/goodslist.jsp</result> 
+        </action>
+     <!-- 登录配置 -->
+        <action name="login" class="com.action.LogInAction">
+            <result name="loginSuccess">/main2.jsp</result>
+            <result name="getloginSuccess">/modpassword.jsp</result>          
+        </action>
+   		<action name="user" class="com.action.UserAction">
+            <result name="ListAll">/system/user/userlist.jsp</result>       
+            <result name="findSuccess">/system/user/moduser.jsp</result>     
+            <result name="adduser">/system/user/adduser.jsp</result>    
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">user!ListAll.action</param>  
+                   <param name="namespace">/</param>            
+            </result> 
+            <result name="success">/system/user/userlist.jsp</result>
+            <result name="haveuser">/system/user/adderror.jsp</result>
+        </action>
+         <action name="supplier" class="com.action.SupplierAction">
+            <result name="List">/supplier/supplylist.jsp</result>
+            <result name="modpage">/supplier/addsupplier.jsp</result>
+			<result name="addSuccess" type="redirectAction">
+                  <param name="actionName">supplier!ListAll.action</param>  
+                   <param name="namespace">/</param>            
+            </result> 
+        </action>
+        <action name="medicine" class="com.action.MedicineAction">
+            <result name="List">/medicine/listsearch.jsp</result>
+            <result name="ListAll">/medicine/list.jsp</result>
+            <result name="modpage">/medicine/addmedicine.jsp</result>
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">medicine!ListAll.action</param>  
+                   <param name="namespace">/</param>            
+            </result> 
+        </action>
+        <action name="role" class="com.action.RoleAction">
+            <result name="ListAll">/system/role/list.jsp</result>
+<!--             <result name="addSuccess">/system/role/list.jsp</result> -->
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">role!ListAll.action</param>  
+                   <param name="namespace">/</param>            
+            </result> 
+            <result name="delSuccess">/system/role/list.jsp</result>
+            <result name="modpage">/system/role/addrole.jsp</result>
+        </action>
+        <action name="menu" class="com.action.MenuAction">
+            <result name="ListAll">/system/menu/list.jsp</result>
+            <result name="Success">/system/menu/list.jsp</result>
+            <result name="modpage">/system/menu/addmenu.jsp</result>
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">menu!ListAll.action</param>  
+                   <param name="namespace">/</param>            
+            </result> 
+        </action>
+        <action name="menuprivilege" class="com.action.MenuprivilegeAction">
+            <result name="menulist">/system/menuprivilege/privillege.jsp</result>
+            <result name="savesuccess" type="redirectAction">
+                  <param name="actionName">menuprivilege</param>  
+                   <param name="namespace">/</param>  
+                     
+            </result>
+        </action>
+    </package>
+    
+    <include file="struts-1.xml"></include>  
+    <include file="struts-2.xml"></include>  	 
+        
+</struts>

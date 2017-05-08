@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>AJAX Content</title>
+	
+	<style type="text/css">
+	</style>
+<script type="text/javascript">
+function see(url,id,title){
+	var diag = new top.Dialog();
+	diag.Title = title;
+	diag.Width=620;
+	diag.Height=500;
+	diag.URL = url+"?id="+id;
+	diag.OKEvent = function(){
+		diag.close();
+	}
+	diag.show();
+}
+</script>
+</head>
+<body >
+<table width="630" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#999999">
+			<tbody>
+				<tr bgcolor="#F3F3F3">
+					<td height="30" align="center" bordercolor="#000000">
+					<div align="left"><img height="20" src="images/blank.gif" width="1"> <font color="#990000"><img src="images/icon/a2.gif" width="15" height="15"></font><font color="#993300">研究生院公告</font></div>
+					</td>
+				</tr>
+				<tr bgcolor="#FFFFFF">
+					<td height="30" align="center">
+					<table width="600" cellpadding="0" cellspacing="0" border="0">						
+							<tbody>
+							<c:forEach begin="0" end="9" varStatus="i">
+			<c:out value="${i.index}"></c:out>
+			<br />
+		</c:forEach>
+							<c:forEach var="item" items="${noticelist}" varStatus="status">
+								<tr>
+								<td width="105" height="22" align="center"><font color="#FF8000">${item.publishtime}</font></td>
+					     		<td width="495" align="left"><a href="#" onclick="see('notice!seeDetail.action',${item.id},'通知公告')">${item.tittle}</a></td>
+								</tr>
+							</c:forEach>
+							<tr>
+								<td width="105" height="22" align="center"><font color="#FF8000">2015-07-15</font></td>
+								<td width="495" align="left"><a href="#" onclick="see('notice!seeDetail.action',3350,'通知公告')">关于举办重庆大学2015年学生微电影作品征集大赛的通知</a></td>
+							</tr>
+						
+							<tr>
+								<td width="105" height="22" align="center"><font color="#FF8000">2015-07-15</font></td>
+								<td width="495" align="left"><a href="#" onclick="showModalDialog('/mis/message/show.do?msgId=5195119','','')">关于举办重庆大学2015年学生微电影作品征集大赛的通知</a></td>
+							</tr>			
+					        </tbody>
+					</table>
+					</td>
+				</tr>
+			</tbody>
+</table>
+
+
+<input name="textfield" style="color:#CCC;" type="text" value="点击文字消失" size="12" onclick="value='';focus()" onblur="if(value=='') value='点击文字消失;"/> 
+	<p style="font-size:14px"> hello</p>
+	<ul>
+		<li>hello</li>
+	</ul>
+</body>
+</html>

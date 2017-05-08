@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Struts2配置文件的DTD信息 --> 
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- Struts2配置文件的根元素 -->
+<struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 配置了系列常量 -->
+    <package name="action2" extends="struts-default">
+        
+        <action name="record" class="com.action.RecordAction">
+            <result name="getrecordsuccess">/recordmanage/recordlist.jsp</result>
+            <result name="seeRecord">/recordmanage/seerecord.jsp</result>
+            <result name="noRecord">/recordmanage/norecord.jsp</result>
+            <result name="isnotshop">/recordmanage/isnotshop.jsp</result>
+            <result name="modpage">/recordmanage/modrecord.jsp</result>
+<!--             <result name="addSuccess">/orgmanage/orgmain.jsp</result> -->
+           <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">record!getRecordList</param>  
+                   <param name="namespace">/</param>          
+            </result> 
+            <result name="ListAll">/recordmanage/recordlist.jsp</result>
+        </action>
+        
+        <action name="evalu" class="com.action.EvaluAction">
+            <result name="getadmin">/evalumanage/adminevalu.jsp</result>
+            <result name="noneedstart">/evalumanage/noneedstart.jsp</result>
+            <result name="getuser">/evalumanage/addevalu.jsp</result>
+            <result name="noneedevalu">/evalumanage/noneedevalu.jsp</result>
+            <result name="alreadyevalu">/evalumanage/alreadyevalu.jsp</result>
+            <result name="ListAll">/evalumanage/scorelist.jsp</result>  
+            <result name="noticeList"> evalumanage/noticelist.jsp</result> 
+           <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">evalu!startEvalu</param>  
+                   <param name="namespace">/</param>           
+            </result> 
+            <result name="addRecordSuccess" type="redirectAction">
+                  <param name="actionName">evalu!startEvalu</param>  
+                   <param name="namespace">/</param>       
+            </result> 
+        </action>
+        
+        <action name="rubbish" class="com.action.RubbishAction">
+            <result name="List">/rubbishmanage/rubbishlist.jsp</result> 
+            <result name="ListAll">/rubbishmanage/orgmain.jsp</result> 
+            <result name="ListMine">/rubbishmanage/mymain.jsp</result>   
+            <result name="seeContent">/rubbishmanage/seecontent.jsp</result>
+            <result name="seeOnlyContent">/rubbishmanage/seeonlycontent.jsp</result>
+            
+            <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">rubbish!listRubbish</param>  
+                   <param name="namespace">/</param>           
+            </result> 
+        </action>
+        
+        <action name="ingoods" class="com.action.InGoodsAction">
+            <result name="ingoodslist">/ingoods/ingoodslist.jsp</result> 
+            <result name="goodslist">/ingoods/goodslist.jsp</result>
+            <result name="goodslistforsearch">/ingoods/goodslistforsearch.jsp</result>
+            <result name="seecard">/ingoods/supplierimage.jsp</result> 
+            <result name="seegoodscard">/ingoods/cardimage.jsp</result>
+            <result name="getMod">/ingoods/modingoods.jsp</result>            
+           
+            <result name="ListAll">/ingoods/orgmain.jsp</result> 
+            <result name="ListMine">/ingoods/mymain.jsp</result>  
+            
+            <result name="addingoodsSuccess" type="redirectAction">
+                  <param name="actionName">ingoods!listInGoods</param>  
+                   <param name="namespace">/</param>           
+            </result>  
+            <result name="addgoodsSuccess" type="redirectAction">
+                  <param name="actionName">ingoods!listInGoods</param>  
+                   <param name="namespace">/</param>           
+            </result>  
+        </action>
+         
+         <action name="notice" class="com.action.NoticeAction">
+                  <result name="ListAll">/noticemanage/noticelist.jsp</result>
+                  <result name="seeSuccess">/noticemanage/seenotice.jsp</result>
+                  <result name="getMod">/noticemanage/modnotice.jsp</result>
+                  <result name="List">/evalumanage/scorelist.jsp</result>
+                  <result name="getallnotice">/about.jsp</result>
+                  
+                  <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">notice!ListAll</param>  
+                   <param name="namespace">/</param>           
+            </result> 
+         </action>
+         
+         <action name="stafftrain" class="com.action.TrainStaffAction">
+                   <result name="List">/trainmanage/stafflist.jsp</result>
+                   <result name="chooseTrain">/trainmanage/addtrainstaff.jsp</result>
+                   <result name="attendeelist">/trainmanage/attendeelist.jsp</result>
+                    <result name="addSuccess" type="redirectAction">
+                  <param name="actionName">stafftrain!List</param>  
+                   <param name="namespace">/</param>   
+                    </result> 
+         </action>
+         
+         <action name="ckeditorUpload" class="com.action.CkeditorUpload ">
+           </action>
+    </package>
+    
+    
+    
+    	 
+        
+</struts>
